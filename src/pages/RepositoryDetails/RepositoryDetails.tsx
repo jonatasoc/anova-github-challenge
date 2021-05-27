@@ -1,17 +1,16 @@
 /* eslint-disable camelcase */
 import React, { useEffect, useState } from 'react';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
-import CardActions from '@material-ui/core/CardActions';
-import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
-import { red } from '@material-ui/core/colors';
-import { MdPageview, MdStar } from 'react-icons/md';
+import {
+  Avatar,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+} from '@material-ui/core';
+import { MdAddAlert, MdArrowBack, MdCallSplit, MdStar } from 'react-icons/md';
+import Divider from '@material-ui/core/Divider';
 
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 
 import {
   Container,
@@ -20,14 +19,15 @@ import {
   RepositoryInfo,
   RepositoryOwnerAvatar,
   RepositoryInfoText,
-  RepositoryName,
   RepositoryOwnerName,
   RepositoryDescription,
+  BackIcon,
 } from './RepositoryDetails.styles';
 import api from '../../services/api';
 
 interface Repository {
   name: string;
+
   full_name: string;
   description: string;
   stargazers_count: number;
@@ -39,35 +39,10 @@ interface Repository {
   };
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      maxWidth: 345,
-    },
-    media: {
-      height: 0,
-      paddingTop: '56.25%', // 16:9
-    },
-    expand: {
-      transform: 'rotate(0deg)',
-      marginLeft: 'auto',
-      transition: theme.transitions.create('transform', {
-        duration: theme.transitions.duration.shortest,
-      }),
-    },
-    expandOpen: {
-      transform: 'rotate(180deg)',
-    },
-    avatar: {
-      backgroundColor: red[500],
-    },
-  }),
-);
-
 const RepositoryDetails: React.FC = () => {
   const { fullName } = useParams<{ fullName: string }>();
   const [repository, setRepository] = useState<Repository>();
-  const classes = useStyles();
+  const history = useHistory();
 
   useEffect(() => {
     const fetchRepoData = async () => {
@@ -80,7 +55,7 @@ const RepositoryDetails: React.FC = () => {
   }, [fullName]);
 
   return (
-    <Container>
+    <Container elevation={2}>
       {repository && (
         <>
           <Title>{repository.name}</Title>
@@ -98,14 +73,42 @@ const RepositoryDetails: React.FC = () => {
                   {repository.description}
                 </RepositoryDescription>
               </RepositoryInfoText>
-              <CardActions>
-                <MdStar size={25} />
-                {`    ${repository.stargazers_count}`}
-                <MdPageview size={25} />
-                {`    ${repository.stargazers_count}`}
-              </CardActions>
             </RepositoryInfo>
+            <Divider />
+            <List>
+              <ListItem>
+                <ListItemAvatar>
+                  <Avatar>
+                    <MdStar size={25} />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={`${repository.stargazers_count} stars`}
+                />
+              </ListItem>
+              <ListItem>
+                <ListItemAvatar>
+                  <Avatar>
+                    <MdCallSplit />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText primary={`${repository.forks_count} forks`} />
+              </ListItem>
+              <ListItem>
+                <ListItemAvatar>
+                  <Avatar>
+                    <MdAddAlert />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={`${repository.open_issues_count} issues`}
+                />
+              </ListItem>
+            </List>
           </RepositoryContent>
+          <BackIcon onClick={() => history.push('/')}>
+            <MdArrowBack size={30} />
+          </BackIcon>
         </>
       )}
     </Container>

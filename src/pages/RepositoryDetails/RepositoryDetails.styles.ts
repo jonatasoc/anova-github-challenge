@@ -1,8 +1,10 @@
+import { Paper } from '@material-ui/core';
 import styled from 'styled-components';
 
-export const Container = styled.main`
+export const Container = styled(Paper)`
   display: flex;
   flex-direction: column;
+  padding: 10px;
 
   margin: 0 auto;
 
@@ -31,6 +33,7 @@ export const Title = styled.p`
 
 export const RepositoryInfo = styled.div`
   display: flex;
+  margin-bottom: 10px;
 
   div:first-child {
     margin-top: 30px;
@@ -65,4 +68,16 @@ export const RepositoryDescription = styled.p`
   font-size: 1rem;
   font-weight: 400;
   margin-left: 10px;
+`;
+
+export const BackIcon = styled.div`
+  align-self: center;
+  width: 100%;
+
+  svg {
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  cursor: pointer;
 `;
