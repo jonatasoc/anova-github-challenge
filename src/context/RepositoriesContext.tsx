@@ -1,5 +1,5 @@
 /* eslint-disable camelcase */
-import React, { createContext, useCallback, useContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 interface RepositoryData {
   id: string;
@@ -11,7 +11,6 @@ interface RepositoryData {
 
 interface RepositoriesContextData {
   results: RepositoryData[];
-  resetRepositories(): void;
   setResults: (repositoryData: RepositoryData[]) => void;
 }
 
@@ -30,18 +29,11 @@ const RepositoriesProvider: React.FC = ({ children }) => {
     return repositories;
   });
 
-  const resetRepositories = useCallback(() => {
-    localStorage.removeItem('@RepositoriesExplorer: repositories');
-
-    setResults([]);
-  }, []);
-
   return (
     <RepositoriesContext.Provider
       value={{
         results,
         setResults,
-        resetRepositories,
       }}
     >
       {children}
