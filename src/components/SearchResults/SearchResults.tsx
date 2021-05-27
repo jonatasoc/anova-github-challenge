@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import React, { useCallback, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { useRepositoriesContext } from '../../context/RepositoriesContext';
 import api from '../../services/api';
 import { LoadingIcon } from '../Loading/Loading.styles';
 
@@ -8,29 +9,15 @@ import RepositoryCard from '../RepositoryCard';
 
 import { Container } from './SearchResults.styles';
 
-interface RepositoryData {
-  id: string;
-  name: string;
-  full_name: string;
-  owner: { avatar_url: string; login: string };
-  description: string;
-}
-
 interface SearchResultsProps {
-  results: RepositoryData[];
   query: string;
-  setResults: (repositoryData: RepositoryData[]) => void;
   totalCount: number;
 }
 
-const SearchResults: React.FC<SearchResultsProps> = ({
-  results,
-  totalCount,
-  query,
-  setResults,
-}) => {
+const SearchResults: React.FC<SearchResultsProps> = ({ totalCount, query }) => {
   const [hasMore, setHasMore] = useState(true);
   const [page, setPage] = useState(2);
+  const { results, setResults } = useRepositoriesContext();
 
   const handleNext = useCallback(async () => {
     if (results.length === totalCount) {
