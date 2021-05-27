@@ -22,22 +22,18 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   ::-webkit-scrollbar {
-    width: 0.4rem;
+    width: 0.8rem;
     height: 0.6rem;
 }
-
  ::-webkit-scrollbar-track {
     background-color: transparent;
     border: none;
 }
-
 ::-webkit-scrollbar-thumb {
-    background-color: var(--asphalt);
+    background-color: #3c4b64;
     border-radius: 3px;
     cursor: move;
 }
-
-
 ::-webkit-scrollbar-corner {
     border: none;
     background: none;
@@ -50,6 +46,9 @@ export const GlobalStyle = createGlobalStyle`
 
     height: 100vh;
     width: 100vw;
+
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
   body, input, button {
@@ -68,16 +67,4 @@ export const GlobalStyle = createGlobalStyle`
     text-decoration: none;
   }
 
-  .lds-dual-ring {
-    animation: lds-dual-ring 1.2s linear infinite;
-  }
-
-  @keyframes lds-dual-ring {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
 `;
