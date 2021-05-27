@@ -1,50 +1,54 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
-import InputBase from '@material-ui/core/InputBase';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
+import { Button } from '@material-ui/core';
 import { MdSearch } from 'react-icons/md';
 
-const useStyles = makeStyles(theme => ({
+import { Container, Input } from './SearchBar.styles';
+import { LoadingIcon } from '../Loading/Loading.styles';
+
+const useStyles = makeStyles(() => ({
   root: {
-    padding: '2px 4px',
+    padding: '10px',
     display: 'flex',
     alignItems: 'center',
-    width: 400,
-  },
-  input: {
-    marginLeft: theme.spacing(1),
-    flex: 1,
-  },
-  iconButton: {
-    padding: 10,
-  },
-  divider: {
-    height: 28,
-    margin: 4,
+    boxShadow: 'none',
   },
 }));
 
-const SearchBar: React.FC = () => {
+interface SearchBarProps {
+  query: string;
+  setQuery: (value: string) => void;
+  isLoading: boolean;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({
+  query,
+  setQuery,
+  isLoading,
+}) => {
   const classes = useStyles();
 
   return (
-    <Paper component="div" className={classes.root}>
-      <InputBase
-        className={classes.input}
-        placeholder="Search for repositories"
-        inputProps={{ 'aria-label': 'search repositories' }}
-      />
-      <Divider className={classes.divider} orientation="vertical" />
-      <IconButton
-        type="submit"
-        className={classes.iconButton}
-        aria-label="search"
-      >
-        <MdSearch />
-      </IconButton>
-    </Paper>
+    <Container>
+      <Paper component="div" className={classes.root}>
+        <Input
+          placeholder="Search for Github repositories"
+          inputProps={{ 'aria-label': 'search repositories' }}
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+        />
+        <Button
+          type="submit"
+          aria-label="search"
+          variant="contained"
+          color="primary"
+          startIcon={isLoading ? <LoadingIcon /> : <MdSearch />}
+        >
+          Search
+        </Button>
+      </Paper>
+    </Container>
   );
 };
 
