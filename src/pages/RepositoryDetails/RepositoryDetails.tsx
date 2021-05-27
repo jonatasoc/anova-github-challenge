@@ -12,6 +12,9 @@ import Divider from '@material-ui/core/Divider';
 
 import { useHistory, useParams } from 'react-router-dom';
 
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
+
 import {
   Container,
   Title,
@@ -39,6 +42,20 @@ interface Repository {
   };
 }
 
+const MySwal = withReactContent(Swal);
+
+const Toast = MySwal.mixin({
+  toast: true,
+  position: 'top-right',
+  iconColor: 'white',
+  customClass: {
+    popup: 'colored-toast',
+  },
+  showConfirmButton: false,
+  timer: 5000,
+  timerProgressBar: true,
+});
+
 const RepositoryDetails: React.FC = () => {
   const { fullName } = useParams<{ fullName: string }>();
   const [repository, setRepository] = useState<Repository>();
@@ -46,9 +63,19 @@ const RepositoryDetails: React.FC = () => {
 
   useEffect(() => {
     const fetchRepoData = async () => {
-      const response = await api.get(`/repos/${fullName}`);
+      try {
+        const response = await api.get(`/repos/${fullName}`);
 
-      setRepository(response.data);
+        setRepository(response.data);
+      } catch (err) {
+        await Toast.fire({
+          icon: 'error',
+          title: `<span style="color: white">${err}<span> `,
+          background: '#e83f5b',
+          iconColor: 'white',
+          timer: 4000,
+        });
+      }
     };
 
     fetchRepoData();
